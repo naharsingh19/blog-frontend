@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Auth.css';
 import { toast } from 'react-toastify';
@@ -15,8 +15,8 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/api/users/register', { username, email, password });
-      login(res.data);
+      const res = await api.post('/api/users/register', { username, email, password });
+      login(res.data.token, res.data.userId, res.data.username);
       navigate('/dashboard');
       toast.success('Registration successful');
     } catch (error) {

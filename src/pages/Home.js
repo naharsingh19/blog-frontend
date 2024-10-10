@@ -22,7 +22,7 @@ const Home = () => {
     fetchBlogs();
   }, []);
 
-  if (loading) return <div className="container">Loading...</div>;
+  if (loading) return <div className="container"></div>;
   if (error) return <div className="container">Error: {error}</div>;
 
   return (

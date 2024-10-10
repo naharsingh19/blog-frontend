@@ -4,11 +4,11 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #24292e;
+  background-color: black;
 }
 
 .auth-box {
-  background-color: #24292e;
+  background-color: black;
   border: 1px solid #d0d7de;
   border-radius: 6px;
   padding: 40px;
@@ -31,7 +31,7 @@
   padding: 5px 12px;
   font-size: 14px;
   line-height: 20px;
-  color: #24292e;
+  color: black;
   vertical-align: middle;
   background-color: #ffffff;
   background-repeat: no-repeat;

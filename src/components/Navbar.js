@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { toast } from 'react-toastify';
+import { FaBars, FaHome, FaPen, FaUser, FaSignOutAlt } from 'react-icons/fa';
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
@@ -9,6 +10,7 @@ const Navbar = () => {
   const [showMenuDropdown, setShowMenuDropdown] = useState(false);
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const userDropdownRef = useRef(null);
+  const menuDropdownRef = useRef(null);
 
   const handleLogout = () => {
     logout();
@@ -24,10 +26,20 @@ const Navbar = () => {
     setShowUserDropdown(!showUserDropdown);
   };
 
+  const getUserInitial = () => {
+    if (user && user.username && user.username.length > 0) {
+      return user.username[0].toUpperCase();
+    }
+    return '?';
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
         setShowUserDropdown(false);
+      }
+      if (menuDropdownRef.current && !menuDropdownRef.current.contains(event.target)) {
+        setShowMenuDropdown(false);
       }
     };
 
@@ -39,25 +51,33 @@ const Navbar = () => {
 
   return (
     <nav style={navStyle}>
-      <div style={menuContainerStyle}>
+      <div style={menuContainerStyle} ref={menuDropdownRef}>
         <button onClick={toggleMenuDropdown} style={menuButtonStyle}>
-          Menu
+          <FaBars style={iconStyle} /> Menu
         </button>
         {showMenuDropdown && (
           <div style={dropdownStyle}>
-            <Link to="/dashboard" style={dropdownLinkStyle}>Home</Link>
-            <Link to="/create" style={dropdownLinkStyle}>Create Blog</Link>
+            <Link to="/dashboard" style={dropdownLinkStyle}>
+              <FaHome style={iconStyle} /> Home
+            </Link>
+            <Link to="/create" style={dropdownLinkStyle}>
+              <FaPen style={iconStyle} /> Create Blog
+            </Link>
           </div>
         )}
       </div>
       <div style={userContainerStyle} ref={userDropdownRef}>
         <button onClick={toggleUserDropdown} style={userButtonStyle}>
-          {user.username[0].toUpperCase()}
+          {getUserInitial()}
         </button>
-        {showUserDropdown && (
+        {showUserDropdown && user && (
           <div style={userDropdownStyle}>
-            <span style={usernameStyle}>{user.username}</span>
-            <button onClick={handleLogout} style={logoutButtonStyle}>Logout</button>
+            <span style={usernameStyle}>
+              <FaUser style={iconStyle} /> {user.username}
+            </span>
+            <button onClick={handleLogout} style={logoutButtonStyle}>
+              <FaSignOutAlt style={iconStyle} /> Logout
+            </button>
           </div>
         )}
       </div>
@@ -70,7 +90,7 @@ const navStyle = {
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: '1rem',
-  backgroundColor: '#24292e',
+  backgroundColor: 'black',
   color: 'white',
 };
 
@@ -79,34 +99,38 @@ const menuContainerStyle = {
 };
 
 const menuButtonStyle = {
-  backgroundColor: '#444d56',
+  backgroundColor: 'black',
   color: 'white',
   border: 'none',
   padding: '0.5rem 1rem',
   cursor: 'pointer',
   fontSize: '1rem',
   width: '120px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 };
 
 const dropdownStyle = {
   position: 'absolute',
   top: '100%',
   left: '0',
-  backgroundColor: '#444d56',
+  backgroundColor: 'black',
   borderRadius: '4px',
   padding: '0.5rem 0',
   boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
   zIndex: 1000,
-  width: '120px',
+  width: '150px',
 };
 
 const dropdownLinkStyle = {
-  display: 'block',
+  display: 'flex',
+  alignItems: 'center',
   padding: '0.5rem 1rem',
   color: 'white',
   textDecoration: 'none',
   ':hover': {
-    backgroundColor: '#586069',
+    backgroundColor: 'gray',
   },
 };
 
@@ -118,8 +142,8 @@ const userButtonStyle = {
   width: '40px',
   height: '40px',
   borderRadius: '50%',
-  backgroundColor: '#0366d6',
-  color: 'white',
+  backgroundColor: 'white',
+  color: 'black',
   border: 'none',
   fontSize: '1.2rem',
   cursor: 'pointer',
@@ -132,7 +156,7 @@ const userDropdownStyle = {
   position: 'absolute',
   top: '120%',
   right: '0',
-  backgroundColor: '#444d56',
+  backgroundColor: 'black',
   borderRadius: '4px',
   padding: '0.5rem',
   boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
@@ -140,11 +164,16 @@ const userDropdownStyle = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  width: '150px',
 };
 
 const usernameStyle = {
   color: 'white',
   marginBottom: '0.5rem',
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  padding: '0.5rem',
 };
 
 const logoutButtonStyle = {
@@ -154,6 +183,13 @@ const logoutButtonStyle = {
   padding: '0.5rem 1rem',
   cursor: 'pointer',
   width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const iconStyle = {
+  marginRight: '0.5rem',
 };
 
 export default Navbar;

@@ -63,7 +63,7 @@ const BlogPost = () => {
     });
   };
 
-  if (loading) return <div style={containerStyle}>Loading...</div>;
+  if (loading) return <div style={containerStyle}></div>;
   if (error) return <div style={containerStyle}>Error: {error}</div>;
   if (!blog) return <div style={containerStyle}>Blog post not found</div>;
 

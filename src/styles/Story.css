@@ -1,0 +1,27 @@
+.story-list {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.story-item {
+  flex: 0 0 auto;
+  width: 80px;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.story-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid #e1306c;
+}
+
+.story-item p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

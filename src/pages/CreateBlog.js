@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import api from '../utils/api';
 import Editor from '../components/Editor';
 import { toast } from 'react-toastify';
+import { FaArrowLeft, FaUpload } from 'react-icons/fa';
 
 const CreateBlog = () => {
   const [title, setTitle] = useState('');
@@ -12,6 +13,7 @@ const CreateBlog = () => {
   const [preview, setPreview] = useState(false);
   const [location, setLocation] = useState('');
   const navigate = useNavigate();
+  const [fileName, setFileName] = useState('No file chosen');
 
   useEffect(() => {
     fetchLocation();
@@ -40,7 +42,7 @@ const CreateBlog = () => {
     }
 
     try {
-      const response = await api.post('/api/blogs', formData, {
+      await api.post('/api/blogs', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -57,9 +59,15 @@ const CreateBlog = () => {
     setPreview(!preview);
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    setFileName(file ? file.name : 'No file chosen');
+  };
+
   return (
     <div style={containerStyle}>
-      <Link to="/dashboard" style={backLinkStyle}>Back</Link>
+      <Link to="/dashboard" style={backLinkStyle}><FaArrowLeft /></Link>
       <h1 style={headerStyle}>Create a New Blog Post</h1>
       {error && <p style={errorStyle}>{error}</p>}
       {!preview ? (
@@ -79,12 +87,19 @@ const CreateBlog = () => {
             placeholder="Location"
             style={inputStyle}
           />
-          <Editor data={content} onChange={setContent} />
-          <input
-            type="file"
-            onChange={(e) => setImage(e.target.files[0])}
-            style={fileInputStyle}
-          />
+          <Editor data={content} style={editorStyle} onChange={setContent} />
+          <div style={fileInputContainerStyle}>
+            <input
+              type="file"
+              onChange={handleFileChange}
+              style={hiddenFileInputStyle}
+              id="file-upload"
+            />
+            <label htmlFor="file-upload" style={fileInputLabelStyle}>
+              <FaUpload style={uploadIconStyle} />
+            </label>
+            <span style={fileNameStyle}>{fileName}</span>
+          </div>
           <div style={buttonContainerStyle}>
             <button type="button" onClick={togglePreview} style={previewButtonStyle}>
               Preview
@@ -116,18 +131,23 @@ const CreateBlog = () => {
 };
 
 const containerStyle = {
-  maxWidth: '800px',
+  maxWidth: '1000px',
   margin: '0 auto',
   padding: '2rem',
-  backgroundColor: '#f0f0f0', // Changed to light grey
+  backgroundColor: 'black', // Changed to light grey
   borderRadius: '8px',
   boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
 };
 
 const headerStyle = {
   textAlign: 'center',
-  color: '#333',
+  color: 'white',
   marginBottom: '2rem',
+};
+
+const editorStyle = {
+  color: 'white',
+  backgroundColor: 'black',
 };
 
 const formStyle = {
@@ -140,19 +160,44 @@ const inputStyle = {
   padding: '0.5rem',
   fontSize: '1rem',
   borderRadius: '4px',
-  border: '1px solid #ccc',
-  color: '#000', // Changed to black
-  backgroundColor: '#fff', // Changed to white
+  border: '1px solid black',
+  color: 'white', 
+  backgroundColor: 'black', 
 };
 
-const fileInputStyle = {
+const fileInputContainerStyle = {
+  display: 'flex',
+  alignItems: 'center',
   marginTop: '1rem',
-  padding: '0.5rem',
+};
+
+const hiddenFileInputStyle = {
+  display: 'none',
+};
+
+const fileInputLabelStyle = {
+  padding: '0.5rem 1rem',
   fontSize: '1rem',
-  backgroundColor: '#fff', // Changed to white
-  color: '#000', // Changed to black
-  border: '1px solid #ccc',
+  backgroundColor: 'black',
+  color: 'white',
+  border: 'none',
   borderRadius: '4px',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  alignItems: 'center',
+  transition: 'background-color 0.3s',
+  ':hover': {
+    backgroundColor: '#45a049',
+  },
+};
+
+const uploadIconStyle = {
+  marginRight: '0.5rem',
+};
+
+const fileNameStyle = {
+  marginLeft: '1rem',
+  color: 'white',
 };
 
 const buttonContainerStyle = {
@@ -164,7 +209,7 @@ const buttonContainerStyle = {
 const submitButtonStyle = {
   padding: '0.5rem 1rem',
   fontSize: '1rem',
-  backgroundColor: '#0056b3',
+  backgroundColor: 'green',
   color: 'white',
   border: 'none',
   borderRadius: '4px',
@@ -174,7 +219,7 @@ const submitButtonStyle = {
 const previewButtonStyle = {
   padding: '0.5rem 1rem',
   fontSize: '1rem',
-  backgroundColor: '#28a745',
+  backgroundColor: 'red',
   color: 'white',
   border: 'none',
   borderRadius: '4px',
@@ -226,7 +271,7 @@ const previewLocationStyle = {
 const backLinkStyle = {
   display: 'inline-block',
   marginBottom: '1rem',
-  color: '#4287f5',
+  color: 'white',
   textDecoration: 'none',
 };
 

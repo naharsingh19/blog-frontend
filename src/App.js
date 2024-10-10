@@ -20,28 +20,31 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={
-              <PrivateRoute>
-                <Navbar />
-                <Dashboard />
-              </PrivateRoute>
-            } />
-            <Route path="/create" element={
-              <PrivateRoute>
-                <Navbar />
-                <CreateBlog />
-              </PrivateRoute>
-            } />
-            <Route path="/edit/:id" element={
-              <PrivateRoute>
-                <Navbar />
-                <EditBlog />
-              </PrivateRoute>
-            } />
+            <Route path="/" element={<PrivateRoute />}>
+              <Route path="dashboard" element={<><Navbar /><Dashboard /></>} />
+              <Route path="create" element={<><Navbar /><CreateBlog /></>} />
+              <Route path="edit/:id" element={<><Navbar /><EditBlog /></>} />
+            </Route>
             <Route path="/blog/:id" element={<BlogPost />} />
-            <Route path="*" element={<Navigate to="/login" replace />} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
-          <ToastContainer position="top-right" autoClose={3000} />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+            limit={3}
+            style={{
+              fontSize: '14px',
+              maxWidth: '300px',
+            }}
+          />
         </div>
       </Router>
     </AuthProvider>

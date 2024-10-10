@@ -4,6 +4,7 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Auth.css';
 import { toast } from 'react-toastify';
+import api from '../utils/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +15,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/users/login', { email, password });
+      const response = await api.post('/api/users/login', { email, password });
       
       // Assuming the response includes token, userId, and username
       const { token, userId, username } = response.data;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: 'https://blog-backend-3jm8.onrender.com',
 });
 
 // Add a request interceptor to include the token in all requests
